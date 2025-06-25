@@ -93,7 +93,7 @@ class AddTodoScreenState extends State<AddTodoScreen> {
                   hintText: '入力してください',
                   border: OutlineInputBorder(),
                 ),
-                maxLines: 3, // 複数行入力可能
+                maxLines: 3,                    // 入力行数の制限. 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '詳細を入力してください';
@@ -104,31 +104,27 @@ class AddTodoScreenState extends State<AddTodoScreen> {
 
               const SizedBox(height: 16),
 
-              // 📅 期日入力フィールド（DatePicker）
-              TextFormField(
+              
+              TextFormField(                    // 期日の入力. 
                 controller: _dateController,
-                readOnly: true, // キーボードを表示しない
+                readOnly: true,                 // キーボードを表示しない.
                 decoration: const InputDecoration(
                   labelText: '期日',
                   hintText: '年/月/日',
                   border: OutlineInputBorder(),
                 ),
-                onTap: () async {
-                  // 日付選択ダイアログを開く
+                onTap: () async {               // 日付選択ダイアログを開く.
                   DateTime? picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2100),
                   );
-                  if (picked != null) {
-                    // 選択した日付をコントローラに反映
+                  if (picked != null) {         // 選択した日付をコントローラに反映.
                     _selectedDate = picked;
                     _dateController.text =
                         '${picked.year}/${picked.month}/${picked.day}';
-
-                    // 期日を選んだあともフォーム状態を再評価
-                    _updateFormValid();
+                    _updateFormValid();         // 期日を選んだあともフォーム状態を再評価.
                   }
                 },
                 validator: (value) {
@@ -153,12 +149,10 @@ class AddTodoScreenState extends State<AddTodoScreen> {
                   });
                 },
               ),
-
-              // 作成ボタン
-              ElevatedButton(
+              ElevatedButton(                 // 作成ボタン.
                 onPressed: _isFormValid
                     ? () => _saveTodo()
-                    : null, // 作成時に保存する処理を追加
+                    : null,                   // 作成時に保存する処理を追加.
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isFormValid
                       ? const Color.fromARGB(255, 0, 0, 255)
@@ -167,11 +161,10 @@ class AddTodoScreenState extends State<AddTodoScreen> {
                     horizontal: 32,
                     vertical: 12,
                   ),
-                ), // 入力完了で活性化
+                ),                            // 入力完了.
                 child: Text(
                   'タスクを追加',
-                  // テキストの色を変更
-                  style: TextStyle(
+                  style: TextStyle(           // テキストのスタイルの指定. 
                     color: _isFormValid ? Colors.white : Colors.grey,
                     fontSize: 18,
                   ),
@@ -186,15 +179,13 @@ class AddTodoScreenState extends State<AddTodoScreen> {
 
   Future<void> _saveTodo() async {
     if (_formKey.currentState!.validate()) {
-      // 既存リストを取得
-      final todos = await widget.todoService.getTodos();
+      final todos = await widget.todoService.getTodos();    // 既存リストを取得.
 
-      if (widget.editingTodo != null) {
-        // 編集モードに入る
+      if (widget.editingTodo != null) {                     // 編集モードに入る.
         final index = todos.indexWhere((t) => t.id == widget.editingTodo!.id);
         if (index != -1) {
           todos[index] = Todo(
-            id: widget.editingTodo!.id, // 元のIDを使う
+            id: widget.editingTodo!.id,                     // 元のIDを使う.
             title: _titleController.text,
             detail: _detailController.text,
             dueDate: _selectedDate!,
@@ -203,8 +194,8 @@ class AddTodoScreenState extends State<AddTodoScreen> {
           );
         }
       } else {
-        // 入力チェック
-        // 新しいTodoを作成
+        // 入力チェック.
+        // 新しいTodoを作成.
         todos.add(
           Todo(
             title: _titleController.text,
@@ -214,15 +205,11 @@ class AddTodoScreenState extends State<AddTodoScreen> {
           ),
         );
       }
-
-      // 保存
+      // 保存.
       await widget.todoService.saveTodos(todos);
-
-      // この画面がまだ非表示にならずに残ってるか確認
+      // この画面がまだ非表示にならずに残ってるか確認.
       if (!mounted) return;
-
-      // 前の画面へ「更新したよ」とだけ知らせる
-      Navigator.pop(context, true); // ←変更
+      Navigator.pop(context, true); // 変更を反映.
     }
   }
 }
