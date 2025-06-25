@@ -3,45 +3,36 @@ import 'package:mytodo/services/todo_service.dart';
 
 import '../models/todo.dart';
 
-// class AddTodoScreen extends StatefulWidget {
-//   final TodoService todoService;
-
-//   const AddTodoScreen({super.key, required this.todoService, required Todo editingTodo});
-
-//   @override
-//   AddTodoScreenState createState() => AddTodoScreenState();
-// }
+// タスクの追加/編集画面を表示するクラス.
 class AddTodoScreen extends StatefulWidget {
   final TodoService todoService;
-  final Todo? editingTodo; // ← nullableにした
+  final Todo? editingTodo;                  // 編集対象のタスク(新規作成時はnull).
   const AddTodoScreen({
     super.key,
     required this.todoService,
-    this.editingTodo, // ← required を削除した
+    this.editingTodo,
   });
   @override
   State<AddTodoScreen> createState() => AddTodoScreenState();
 }
 
 class AddTodoScreenState extends State<AddTodoScreen> {
-  // 入力内容を管理するコントローラー
-  final TextEditingController _titleController = TextEditingController();
+  // 入力内容を管理するコントローラ.
+  final TextEditingController _titleController  = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
+  final TextEditingController _dateController   = TextEditingController(); // 期日表示用.
   double _currentValue = 5;
-  final TextEditingController _dateController =
-      TextEditingController(); // 期日表示用
+  DateTime? _selectedDate; // 選択された期日.
 
-  DateTime? _selectedDate; // 選択された期日
-
-  // フォームの入力検証用
+  // フォームの入力検証用.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _isFormValid = false; // フォーム入力が完了しているか
+  bool _isFormValid = false; // フォーム入力が完了しているか.
 
   @override
   void initState() {
     super.initState();
-    // テキスト入力が変わるたびにチェック
+    // 編集モードな既存の内容を得る. 
     if (widget.editingTodo != null) {
       _titleController.text = widget.editingTodo!.title;
       _detailController.text = widget.editingTodo!.detail;
@@ -50,18 +41,18 @@ class AddTodoScreenState extends State<AddTodoScreen> {
           '${_selectedDate!.year}/${_selectedDate!.month}/${_selectedDate!.day}';
       _currentValue = widget.editingTodo!.priority.toDouble();
     }
+    // 変化後のテキストを評価.
     _titleController.addListener(_updateFormValid);
     _detailController.addListener(_updateFormValid);
   }
 
-  /// 全入力欄が埋まっているかを判定し、
-  /// ボタンの活性状態（押せる/押せない）を更新するメソッド
+  // 全入力欄が埋まっているかを判定し, ボタンの有効化に反映する. 
   void _updateFormValid() {
     setState(() {
       _isFormValid =
           _titleController.text.isNotEmpty &&
           _detailController.text.isNotEmpty &&
-          _selectedDate != null; // 期日が選択されているか
+          _selectedDate != null;
     });
   }
 
@@ -73,21 +64,19 @@ class AddTodoScreenState extends State<AddTodoScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          // 入力フォームの枠組み
+        child: Form(                            // 入力フォーム.
           key: _formKey,
           child: Column(
             children: [
-              // タイトル入力フィールド
-              TextFormField(
+              TextFormField(                    // タイトル入力.
                 controller: _titleController,
                 decoration: const InputDecoration(
                   labelText: 'タスクのタイトル',
                   hintText: '20文字以内で入力してください',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  // 入力チェック
+
+                validator: (value) {            // タイトルの確認. 
                   if (value == null || value.isEmpty) {
                     return 'タイトルを入力してください';
                   }
@@ -95,9 +84,9 @@ class AddTodoScreenState extends State<AddTodoScreen> {
                 },
               ),
 
-              const SizedBox(height: 16), // 余白
-              // 詳細入力フィールド
-              TextFormField(
+              const SizedBox(height: 16),
+
+              TextFormField(                    // 詳細の入力.
                 controller: _detailController,
                 decoration: const InputDecoration(
                   labelText: 'タスクの詳細',

@@ -2,10 +2,10 @@ import 'package:uuid/uuid.dart';  // 一意なIDを生成するライブラリ
 
 class Todo {
   final String id;          // 各タスクの固有識別番号
-  final String title;       // タスクのタイトル（例：「レポートを書く」）
-  final String detail;      // タスクの詳細（例：「心理学のレポート、2000字」）
-  final DateTime dueDate;   // 期日（例：DateTime(2025, 4, 1)）
-  final bool isCompleted;   // チェック済みかどうか（true: 完了, false: 未完了）
+  final String title;       // タスクのタイトル
+  final String detail;      // タスクの詳細
+  final DateTime dueDate;   // 期日
+  final bool isCompleted;   // 完了したかどうか
   final int priority;
   Todo({
     String? id,                       // IDが指定されない場合は自動生成
