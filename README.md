@@ -6,3 +6,14 @@
 <img width="150" alt="example_screen" src="https://github.com/user-attachments/assets/518a5137-e2a0-46c2-9252-5621c037dfe3" />\
 やるべきことの追加は以下のように行います。\
 <img width="150" alt="example_add_todo" src="https://github.com/user-attachments/assets/e9c98575-c402-4d16-8a0d-16ecc547cf84" />
+
+## 追加を予定または検討している機能
+- やらないべきことNotToDoの実装
+  - スマホを触る、間食をしないなど。
+- タスクの階層化
+  - "大学の課題"というようにグルーピングできるようにする。
+  - "〇〇の開発"の中に"XXの実装"を作流ことができるようにする。
+- どれだけタスクをこなしたかの可視化
+- "あとでやる"的な機能の実装
+- やらない理由を述べさせる機能
+  - タスクをこなすためのモチベーションを高める。
