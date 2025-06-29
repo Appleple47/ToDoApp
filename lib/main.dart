@@ -3,7 +3,6 @@ import 'package:mytodo/screens/list_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'services/todo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// ほかの import は省略
 
 void main() async {
   initializeDateFormatting('id'); 
@@ -34,11 +33,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-/*
-void main(){
-  initializeDateFormatting('id'); 
-  // 国ごとのデータフォーマットを得る
-  // https://qiita.com/tetsukick/items/dd1093f5b54e1eb7d72e
-  runApp(const MyApp());
-}
-*/
